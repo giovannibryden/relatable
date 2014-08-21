@@ -1,3 +1,20 @@
 <h1>Fetch lists from RelateIQ</h1>
 
-<%= relate %>
+<% length = relate(0,"length")%>
+
+<span>Number of leads: <%= length %></span><br><br>
+
+<% for i in 0..length-1 %>
+
+	<span>#<%= i+1 %></span><br>
+	
+	<div>Account name: <%= relate(i,"name") %></div>
+	
+	<div>Account ID: <%= relate(i,"account") %></div>
+	
+	<div>Company website: <a href="#" title=""><%= relate(i,"website") %></a></div>
+
+	<br>
+
+<% end %>
+
