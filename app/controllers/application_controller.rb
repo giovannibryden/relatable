@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   helper_method :relate_length
   helper_method :relate
 
+  # One method to rule them all, one if else statement to bind them
+
   def relate(num,value)
     
     require 'net/https'
