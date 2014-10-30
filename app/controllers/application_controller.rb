@@ -3,10 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  helper_method :relate_website
-  helper_method :relate_account
-  helper_method :relate_length
   helper_method :relate
+  helper_method :similar
 
   # One method to rule them all, one if else statement to bind them
 
@@ -15,7 +13,7 @@ class ApplicationController < ActionController::Base
     require 'net/https'
     require 'json'
 
-    uri = URI('https://api.relateiq.com/v2/lists/53d2cd5ce4b04e37e550208a/listitems?_start=0&_limit=5')
+    uri = URI('https://api.relateiq.com/v2/lists/5448300ee4b0f8d6641caf91/listitems')
 
     req = Net::HTTP::Get.new(uri)
     req.basic_auth '53dc0b49e4b088619bfe48f6', 'g9Bb7j6XXSZYOJh5cpngznvUPtl'
@@ -31,77 +29,36 @@ class ApplicationController < ActionController::Base
     if value === "account" then
       account = JSON.parse(res)['objects'][num]['accountId']
     elsif value === "website" then
-      website = JSON.parse(res)['objects'][num]['fieldValues']["60"].to_json[9..-4]
+      website = JSON.parse(res)['objects'][num]['fieldValues']["8"].to_json[9..-4]
+      if website.nil?
+        website = "N/A"
+      else
+        website = website
+      end
     elsif value === "length" then
       length = JSON.parse(res)['objects'].length()
     elsif value === "name" then
-      length = JSON.parse(res)['objects'][num]['name']
+      name = JSON.parse(res)['objects'][num]['name']
     else
       return "Value is invalid"
     end
-      
   end
 
-  # def relate_website(num)
-  	
-  #   require 'net/https'
-  #   require 'json'
 
-  #   uri = URI('https://api.relateiq.com/v2/lists/53d2cd5ce4b04e37e550208a/listitems/')
+  # Method to grab traffic based on website passed.
+  def similar(website)
 
-  #   req = Net::HTTP::Get.new(uri)
-  #   req.basic_auth '53dc0b49e4b088619bfe48f6', 'g9Bb7j6XXSZYOJh5cpngznvUPtl'
+    uri = URI("http://api.similarweb.com/Site/"+website+"/v1/EstimatedTraffic?Format=JSON&UserKey=45e195d928eed346a2dc5d162fe9b639")
 
-  #   res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http|
-  #     http.request(req)
-  #   }
+    req = Net::HTTP::Get.new(uri)
 
-  #   # Get name of website. 
-    
-  #   res = res.body
-  #   website = JSON.parse(res)['objects'][num]['fieldValues']["60"].to_json[9..-4]
+    res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http|
+      http.request(req)
+    }
 
-  # end
+    res = res.body  
 
-  # def relate_account(num)
+    return res.to_json[24..-5]
 
-  #   require 'net/https'
-  #   require 'json'
-
-  #   uri = URI('https://api.relateiq.com/v2/lists/53d2cd5ce4b04e37e550208a/listitems/')
-
-  #   req = Net::HTTP::Get.new(uri)
-  #   req.basic_auth '53dc0b49e4b088619bfe48f6', 'g9Bb7j6XXSZYOJh5cpngznvUPtl'
-
-  #   res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http|
-  #     http.request(req)
-  #   }
-
-  #   # Get account ID
-
-  #   res = res.body
-  #   account = JSON.parse(res)['objects'][num]['accountId']
-
-  # end
-
-  # def relate_length
-
-  #   require 'net/https'
-  #   require 'json'
-
-  #   uri = URI('https://api.relateiq.com/v2/lists/53d2cd5ce4b04e37e550208a/listitems/')
-
-  #   req = Net::HTTP::Get.new(uri)
-  #   req.basic_auth '53dc0b49e4b088619bfe48f6', 'g9Bb7j6XXSZYOJh5cpngznvUPtl'
-
-  #   res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http|
-  #     http.request(req)
-  #   }
-
-  #   # Get number of leads
-
-  #   res = res.body
-  #   length = JSON.parse(res)['objects'].length()
-
-  # end
+  end
 end
