@@ -5,7 +5,7 @@
 require 'net/https'
 require 'json'
 
-uri = URI('https://api.relateiq.com/v2/lists/53d2cd5ce4b04e37e550208a/listitems/')
+uri = URI('https://api.relateiq.com/v2/lists/5448300ee4b0f8d6641caf91/listitems/5452cc38e4b0e8122e0f09d3')
 
 req = Net::HTTP::Get.new(uri)
 req.basic_auth '53dc0b49e4b088619bfe48f6', 'g9Bb7j6XXSZYOJh5cpngznvUPtl'
@@ -15,7 +15,7 @@ res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https')
 }
 
 res = res.body
-puts res = JSON.parse(res)['objects'][2]['fieldValues'].to_json
+puts res
 
 	# secret
 	# 41APAZarLkss6kQ5UfuAwmrPgg9

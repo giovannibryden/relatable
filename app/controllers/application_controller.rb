@@ -9,12 +9,11 @@ class ApplicationController < ActionController::Base
   # One method to rule them all, one if else statement to bind them
 
   def relate(num,value)
-    
+
     require 'net/https'
     require 'json'
 
     uri = URI('https://api.relateiq.com/v2/lists/5448300ee4b0f8d6641caf91/listitems')
-
     req = Net::HTTP::Get.new(uri)
     req.basic_auth '53dc0b49e4b088619bfe48f6', 'g9Bb7j6XXSZYOJh5cpngznvUPtl'
 
@@ -44,14 +43,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   # Method to grab traffic based on website passed.
   def similar(website)
 
     uri = URI("http://api.similarweb.com/Site/"+website+"/v1/EstimatedTraffic?Format=JSON&UserKey=45e195d928eed346a2dc5d162fe9b639")
-
     req = Net::HTTP::Get.new(uri)
-
     res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https') {|http|
       http.request(req)
     }

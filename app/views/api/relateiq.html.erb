@@ -6,14 +6,10 @@
 
 <% for i in 0..length-1 %>
 
-	<span>#<%= i+1 %></span><br>
-	
+	<span>#<%= i+1 %></span><br>	
 	<div>Account name: <%= relate(i,"name") %></div>
-	
-	<div>Company website: <a href="#" title=""><%= relate(i,"website") %></a></div>
-
+	<div>Company website: <a href="" title=""><%= relate(i,"website") %></a></div>
 	<div>Monthly traffic: <%= similar(relate(i,"website")) %></div>
-
 	<br>
 
 <% end %>
